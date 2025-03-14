@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AviationApp.ViewModels"
+        xmlns:models="clr-namespace:AviationApp.Models"
+        x:Class="AviationApp.Views.MainWindow"
+        Title="Aviation App" 
+        Width="600" 
+        Height="400"
+        x:DataType="vm:MainWindowViewModel">
+    
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" 
+                    Orientation="Horizontal" 
+                    Spacing="10" 
+                    Margin="5">
+            <Button Content="Добавить самолет" 
+                    Command="{Binding AddAirplaneCommand}"/>
+            <Button Content="Добавить вертолет" 
+                    Command="{Binding AddHelicopterCommand}"/>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="*,2*" Margin="5">
+            <StackPanel Grid.Column="0" Spacing="10">
+                <ListBox ItemsSource="{Binding Aircrafts}"
+                         SelectedItem="{Binding SelectedAircraft}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:Aircraft">
+                            <TextBlock Text="{Binding AircraftType}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <StackPanel Spacing="5">
+                    <Button Content="Взлет" 
+                            Command="{Binding TakeOffCommand}"/>
+                    <Button Content="Посадка" 
+                            Command="{Binding LandCommand}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBox Grid.Column="1" 
+                     Text="{Binding StatusLog}" 
+                     IsReadOnly="True"
+                     TextWrapping="Wrap" 
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </Grid>
+    </DockPanel>
+</Window>
