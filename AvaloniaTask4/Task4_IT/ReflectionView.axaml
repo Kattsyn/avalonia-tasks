@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Task2"
+             x:Class="Task2.ReflectionView"
+             x:DataType="vm:ReflectionViewModel">
+    <UserControl.DataContext>
+        <vm:ReflectionViewModel />
+    </UserControl.DataContext>
+    
+    <ScrollViewer>
+        <StackPanel Spacing="8" Margin="10" Width="500">
+            <TextBlock Text="Динамическая загрузка классов" FontSize="18" FontWeight="Bold"/>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Text="{Binding DllPath}" Watermark="Путь к DLL"/>
+                <Button Grid.Column="1" Content="Обзор..." Command="{Binding BrowseCommand}" Margin="5,0,0,0"/>
+            </Grid>
+            
+            <Button Content="Загрузить сборку" Command="{Binding LoadAssemblyCommand}"/>
+            
+            <TextBlock Text="Классы:" Margin="0,10,0,0"/>
+            <ComboBox ItemsSource="{Binding FoundTypes}" SelectedItem="{Binding SelectedType}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Display}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <!-- Параметры конструктора -->
+            <TextBlock Text="Параметры конструктора:" Margin="0,10,0,0" 
+                       IsVisible="{Binding ConstructorParameters.Count}"/>
+            <ItemsControl ItemsSource="{Binding ConstructorParameters}" 
+                          IsVisible="{Binding ConstructorParameters.Count}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding Input}" Grid.Column="1" Margin="5,0"/>
+                            <TextBlock Text="{Binding TypeName}" Grid.Column="2" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <TextBlock Text="Методы:" Margin="0,10,0,0"/>
+            <ComboBox ItemsSource="{Binding Methods}" SelectedItem="{Binding SelectedMethod}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Display}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Text="Параметры метода:" Margin="0,10,0,0"/>
+            <ItemsControl ItemsSource="{Binding Parameters}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding Input}" Grid.Column="1" Margin="5,0"/>
+                            <TextBlock Text="{Binding TypeName}" Grid.Column="2" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <Button Content="Выполнить" Command="{Binding ExecuteCommand}" Width="100" 
+                    Margin="0,20,0,0" HorizontalAlignment="Center"/>
+            
+            <TextBlock Text="Результат:" Margin="0,10,0,0" FontWeight="Bold"/>
+            <TextBox Text="{Binding Result}" IsReadOnly="True" Height="100" TextWrapping="Wrap"/>
+            
+            <Button Content="Сбросить экземпляр" Command="{Binding ResetInstanceCommand}" 
+                    Margin="0,10,0,0" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

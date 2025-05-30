@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Task2"
+        x:Class="Task2.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Летательные средства"
+        Width="400" Height="300">
+        
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+
+    <TabControl>
+        <TabItem Header="Управление">
+            <StackPanel Spacing="10" Margin="10">
+                <TextBlock Text="{Binding Status}" FontSize="16" TextAlignment="Center"/>
+                
+                <Button Content="Взлет самолета" Command="{Binding TakeoffAirplaneCommand}" />
+                <Button Content="Посадка самолета" Command="{Binding LandAirplaneCommand}" />
+                
+                <Button Content="Взлет вертолета" Command="{Binding TakeoffHelicopterCommand}" />
+                <Button Content="Посадка вертолета" Command="{Binding LandHelicopterCommand}" />
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Рефлексия">
+            <vm:ReflectionView />
+        </TabItem>
+    </TabControl>
+</Window>
