@@ -1,0 +1,68 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:StoreApp.ViewModels"
+        xmlns:local="clr-namespace:StoreApp.Models"
+        x:Class="StoreApp.Views.MainWindow"
+        Title="StoreApp" Width="800" Height="600"
+        SizeChanged="Window_SizeChanged">
+
+    <Window.Resources>
+        <local:TypeToColorConverter x:Key="TypeToColorConverter" />
+    </Window.Resources>
+
+    <Window.DataContext>
+        <viewModels:StoreViewModel />
+    </Window.DataContext>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Canvas x:Name="MainCanvas" Background="LightGray" Width="1500" Height="1000">
+
+            <!-- Панель с кнопками -->
+            <Border Canvas.Left="10" Canvas.Top="10" Background="#DDFFFFFF" Padding="10">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Добавить покупателя" Command="{Binding AddCustomerCommand}" />
+                    <Button Content="Добавить магазин" Command="{Binding AddStoreCommand}" />
+					<TextBlock Text="{Binding Stores.Count}" Foreground="Red" VerticalAlignment="Center" FontWeight="Bold" />
+					<TextBlock Text="{Binding Customers.Count}" Foreground="Red" VerticalAlignment="Center" FontWeight="Bold" />
+				</StackPanel>
+            </Border>
+
+            <!-- Элементы из Models -->
+            <ItemsControl ItemsSource="{Binding Models}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Width="1500" Height="1000" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl>
+                            <ContentControl.RenderTransform>
+                                <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                            </ContentControl.RenderTransform>
+                            <Border Background="{Binding Converter={StaticResource TypeToColorConverter}}"
+                                    Padding="10" CornerRadius="10" Width="100" Height="50">
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ContentControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+			<!-- Панель событий -->
+			<Border Canvas.Left="10" Canvas.Top="500" Background="#DDFFFFFF" Padding="10">
+				<StackPanel Orientation="Vertical" Spacing="5">
+					<TextBlock Text="События:" FontWeight="Bold" />
+					<ItemsControl ItemsSource="{Binding EventLog}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding}" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</StackPanel>
+			</Border>
+        </Canvas>
+    </ScrollViewer>
+</Window>
